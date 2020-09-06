@@ -4,6 +4,8 @@
 //
 // TODO: detect the recusive loop, label the numbers involved as invalid, and
 // continue to solve. Do solutions exist?
+//
+// TODO: expand into hexadecimal and explore up to 16-digits!
 package main
 
 import (
