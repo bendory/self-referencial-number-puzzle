@@ -1,6 +1,7 @@
 // main recursively solves the puzzle described in the README. By default it
-// solves the 8-digit version. Two solutions exist for the 6-digit puzzle; other
-// digit counts result in an infinite recursion.
+// solves the 8-digit version. Two solutions exist for the 6- and 7- digit
+// puzzles and one solution for the 1-sigit version. Other digit counts result
+// in an infinite recursion.
 //
 // TODO: expand into hexadecimal and explore up to 16-digits!
 package main
@@ -45,7 +46,7 @@ func main() {
 	steps := map[int]int{}   // Count how many steps to the answer.
 	maxSteps := 0            // Track max number of steps.
 	worst := 0               // What is the worst-case iteration?
-	canonical := []string{}
+	solutions := []string{}
 
 	for i := 0; i <= max; i++ {
 		s := fmt.Sprintf(format, i)
@@ -65,7 +66,7 @@ func main() {
 		}
 
 		if n == 0 {
-			canonical = append(canonical, s)
+			solutions = append(solutions, s)
 		}
 	}
 
@@ -77,19 +78,21 @@ func main() {
 		fmt.Printf("%d ints took %d steps.\n", val, i)
 	}
 	fmt.Printf("%d ints got stuck in loops.\n", steps[-1])
-	fmt.Printf(format+" was a worst-case recursion which took %d steps.\n", worst, maxSteps)
-	fmt.Printf("Canonical: %v\n", canonical)
+	if maxSteps > 0 {
+		fmt.Printf(format+" was a worst-case recursion which took %d steps.\n", worst, maxSteps)
+	}
+	fmt.Printf("Solutions: %v\n", solutions)
 }
 
-// recurse returns the number of steps from the current int to the canonical
-// solution, memo-izing intermediate steps into m as it goes.
+// recurse returns the number of steps from the current int to a valid solution,
+// memo-izing intermediate steps into m as it goes.
 func recurse(m map[string]int, seen map[string]bool, s string) int {
 	if val, ok := m[s]; ok {
 		return val
 	}
 
 	n := next(s)
-	if n == s { // found the canonical answer
+	if n == s { // found a solution
 		m[n] = 0
 		return 0
 	}
