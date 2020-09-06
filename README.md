@@ -54,6 +54,8 @@ Sadly, I don't know.  This method does not work with all problems of this type. 
 
 (Thanks for probabilist Ander Holroyd for creating and contributing this puzzle!)
 
+-----
+
 ## Empirical Analysis
 
 Compiling and running `main.go` will check every 8-digit number to empirically
