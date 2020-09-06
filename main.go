@@ -2,9 +2,6 @@
 // solves the 8-digit version. Two solutions exist for the 6-digit puzzle; other
 // digit counts result in an infinite recursion.
 //
-// TODO: detect the recusive loop, label the numbers involved as invalid, and
-// continue to solve. Do solutions exist?
-//
 // TODO: expand into hexadecimal and explore up to 16-digits!
 package main
 
@@ -52,7 +49,7 @@ func main() {
 
 	for i := 0; i <= max; i++ {
 		s := fmt.Sprintf(format, i)
-		n := recurse(memo, s)
+		n := recurse(memo, map[string]bool{}, s)
 
 		val, _ := steps[n]
 		val++ // val is 0 if not found.
@@ -63,7 +60,7 @@ func main() {
 			assert(maxSteps <= 10)
 		}
 
-		if digits > 4 && i%statusInterval == 0 {
+		if digits > 5 && i%statusInterval == 0 {
 			fmt.Printf("%.1e\n", float64(i))
 		}
 
@@ -79,13 +76,14 @@ func main() {
 		}
 		fmt.Printf("%d ints took %d steps.\n", val, i)
 	}
-	fmt.Printf("%d was a worst-case recursion which took %d steps.\n", worst, maxSteps)
+	fmt.Printf("%d ints got stuck in loops.\n", steps[-1])
+	fmt.Printf(format+" was a worst-case recursion which took %d steps.\n", worst, maxSteps)
 	fmt.Printf("Canonical: %v\n", canonical)
 }
 
 // recurse returns the number of steps from the current int to the canonical
 // solution, memo-izing intermediate steps into m as it goes.
-func recurse(m map[string]int, s string) int {
+func recurse(m map[string]int, seen map[string]bool, s string) int {
 	if val, ok := m[s]; ok {
 		return val
 	}
@@ -95,8 +93,18 @@ func recurse(m map[string]int, s string) int {
 		m[n] = 0
 		return 0
 	}
+	if _, ok := seen[n]; ok {
+		for k, _ := range seen {
+			m[k] = -1 // -1 is a sentinal value for recursion.
+		}
+	}
 
-	nSteps := recurse(m, n)
+	seen[n] = true
+	nSteps := recurse(m, seen, n)
+	if nSteps == -1 {
+		m[s] = -1
+		return -1
+	}
 	m[s] = nSteps + 1
 	return nSteps + 1
 }
