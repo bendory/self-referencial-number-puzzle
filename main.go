@@ -1,3 +1,9 @@
+// main recursively solves the puzzle described in the README. By default it
+// solves the 8-digit version. Two solutions exist for the 6-digit puzzle; other
+// digit counts result in an infinite recursion.
+//
+// TODO: detect the recusive loop, label the numbers involved as invalid, and
+// continue to solve. Do solutions exist?
 package main
 
 import (
