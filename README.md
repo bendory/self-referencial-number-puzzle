@@ -24,6 +24,7 @@ Not to worry.  Repeat the procedure with N1 to get N2, then N3, until you reach 
 Let's try this; why not start with 31415926, the first 8 digits of the decimal expansion of pi?
 
 We obtain:
+
 	N0 = 31415926
 	N1 = 02111117
 	N2 = 15100004
@@ -36,6 +37,7 @@ We obtain:
 It worked!
 
 Let's try it again with the first 8 digits of e = 2.7182818:
+
 	N0 = 27182818
 	N1 = 02200004
 	N2 = 50201003
