@@ -77,7 +77,7 @@ Note: there are *10* 1-digit integers because 0 counts.
 	1 ints took 0 steps.
 	9 ints took 1 steps.
 	0 ints got stuck in loops.
-	0 was a worst-case recursion which took 1 steps.
+	0 was a worst-case iteration which took 1 steps.
 	Canonical: [1]
 
 ### 2 Digits
@@ -103,7 +103,7 @@ Note: there are *10* 1-digit integers because 0 counts.
 	10860 ints took 3 steps.
 	3456 ints took 4 steps.
 	81364 ints got stuck in loops.
-	44444 was a worst-case recursion which took 4 steps.
+	44444 was a worst-case iteration which took 4 steps.
 	Canonical: [12104]
 
 ### 6 Digits
@@ -115,7 +115,7 @@ Note: there are *10* 1-digit integers because 0 counts.
 	497100 ints took 4 steps.
 	313600 ints took 5 steps.
 	0 ints got stuck in loops.
-	000556 was a worst-case recursion which took 5 steps.
+	000556 was a worst-case iteration which took 5 steps.
 	Canonical: [122014 130114]
 
 ### 7 Digits
@@ -129,7 +129,7 @@ Note: there are *10* 1-digit integers because 0 counts.
 	3064110 ints took 6 steps.
 	23184 ints took 7 steps.
 	3512208 ints got stuck in loops.
-	0000678 was a worst-case recursion which took 7 steps.
+	0000678 was a worst-case iteration which took 7 steps.
 	Canonical: [3022003 3103003]
 
 ### 8 Digits
@@ -144,7 +144,7 @@ Note: there are *10* 1-digit integers because 0 counts.
 	7367026 ints took 7 steps.
 	2291268 ints took 8 steps.
 	0 ints got stuck in loops.
-	00007789 was a worst-case recursion which took 8 steps.
+	00007789 was a worst-case iteration which took 8 steps.
 	Canonical: [23110105]
 
 ### 9 Digits

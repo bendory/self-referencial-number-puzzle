@@ -79,7 +79,7 @@ func main() {
 	}
 	fmt.Printf("%d ints got stuck in loops.\n", steps[-1])
 	if maxSteps > 0 {
-		fmt.Printf(format+" was a worst-case recursion which took %d steps.\n", worst, maxSteps)
+		fmt.Printf(format+" was a worst-case iteration which took %d steps.\n", worst, maxSteps)
 	}
 	fmt.Printf("Solutions: %v\n", solutions)
 }
