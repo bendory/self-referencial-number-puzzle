@@ -113,6 +113,9 @@ func recurse(m map[string]int, seen map[string]bool, s string) int {
 	}
 
 	seen[n] = true
+	if len(seen) > digits {
+		fmt.Printf("Warning: recursion depth is now %d.\n", len(seen))
+	}
 	nSteps := recurse(m, seen, n)
 	if nSteps == -1 {
 		m[s] = -1
