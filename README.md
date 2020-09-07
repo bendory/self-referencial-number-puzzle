@@ -75,6 +75,8 @@ output includes:
 Note: there are *10* 1-digit integers because 0 counts; there are *100* 2-digit
 integers because 00 counts; etc.
 
+### Observations and Questions
+
 Some observations and questions for future exploration:
 
 - For the n-digit puzzle, it never takes more than *n* iterations to reach a
