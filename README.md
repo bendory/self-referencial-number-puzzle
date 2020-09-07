@@ -72,7 +72,19 @@ output includes:
 - the canonical solutions to the puzzle for the given number of digits -- which
   turns out to be 0, 1, or 2 solutions depending on the number of digits
 
-Note: there are *10* 1-digit integers because 0 counts.
+Note: there are *10* 1-digit integers because 0 counts; there are *100* 2-digit
+integers because 00 counts; etc.
+
+Some observations and questions for future exploration:
+
+- For the n-digit puzzle, it never takes more than *n* iterations to reach a
+  solution. Why?
+- The 5-, 7-, and 9-digit versions *both* have solutions *and* have starting
+  numbers that get stuck in loops. The 6- and 8-digit versions *only* have
+  solutions but no loops. Is this random or is there some underlying reason?
+- Are there any relationships among the solutions?
+
+TODO: Explore the hexadecimal space to get beyond 9 digits.
 
 ### 1 Digit
 

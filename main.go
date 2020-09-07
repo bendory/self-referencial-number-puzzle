@@ -1,7 +1,5 @@
 // main recursively solves the puzzle described in the README. By default it
-// solves the 8-digit version. Two solutions exist for the 6- and 7- digit
-// puzzles and one solution for the 1-sigit version. Other digit counts result
-// in an infinite recursion.
+// solves the 8-digit version.
 //
 // TODO: expand into hexadecimal and explore up to 16-digits!
 package main
