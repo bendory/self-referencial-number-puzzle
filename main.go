@@ -68,9 +68,9 @@ func main() {
 		}
 
 		if digits > 5 && i%statusInterval == 0 {
-			fmt.Printf("%.1e numbers completed", float64(i))
+			fmt.Printf("%.1e numbers completed; %d memoized", float64(i), len(memo))
 			if steps[-1] != 0 {
-				fmt.Printf(": %d ints landing in loop cycles found (so far)", steps[-1])
+				fmt.Printf("; %d ints landed in loop cycles (so far)", steps[-1])
 			}
 			fmt.Println(".")
 		}
@@ -100,7 +100,7 @@ func main() {
 // memo-izing intermediate steps into `m`. `seen` is used to detect cycles.
 func recurse(m map[string]int, seen map[string]bool, s string) int {
 	if val, ok := m[s]; ok {
-		return val // We've seen this number already.
+		return val // We've memoized this number already.
 	}
 
 	n := next(s)
@@ -112,7 +112,7 @@ func recurse(m map[string]int, seen map[string]bool, s string) int {
 		return -1 // -1 is a sentinal value for cycle-detection.
 	}
 
-	seen[n] = true
+	seen[s] = true
 	if len(seen) > digits {
 		fmt.Printf("Warning: recursion depth is now %d.\n", len(seen))
 	}
@@ -146,8 +146,8 @@ func next(s string) string {
 		b.WriteString(valStr)
 	}
 
-	b.WriteString(fmt.Sprintf("%d", len(m))) // Add the digit-count digit.
-	assert(digits == b.Len())
+	b.WriteString(fmt.Sprintf("%d", len(m))) // Add the digit for the number of unique digits.
+	assert(digits == b.Len())                // Integrity check.
 	return b.String()
 }
 
