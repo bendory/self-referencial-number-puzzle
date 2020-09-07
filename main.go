@@ -7,14 +7,17 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"math"
 	"strconv"
 	"strings"
 )
 
-var digits = 8
+var digits = 8 // default to 8 digits if no arg is given.
 
 func main() {
+	// main() takes (up to) 1 arg, an integer representing the number of digits
+	// for which to run the puzzle.
 	flag.Parse()
 
 	switch flag.NArg() {
@@ -23,41 +26,42 @@ func main() {
 		arg := flag.Arg(0)
 		var err error
 		if digits, err = strconv.Atoi(arg); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	default:
-		panic(fmt.Sprintf("I don't know how to handle %d args.", flag.NArg()))
+		log.Fatalf("I don't know how to handle %d args.", flag.NArg())
 	}
 
 	if digits < 1 || digits > 9 {
-		panic("Arg must be in range 1-9.")
+		log.Fatal("Arg must be in range 1-9.")
 	}
 
 	fmt.Printf("Running puzzle for %d-digit ints.\n", digits)
-	max := int(math.Pow10(digits)) - 1
-	format := fmt.Sprintf("%%0%dd", digits)
-	statusInterval := int(math.Pow10(digits - 2))
+	max := int(math.Pow10(digits)) - 1            // highest int to check
+	format := fmt.Sprintf("%%0%dd", digits)       // sprintf format to convert all ints to n-digit number strings
+	statusInterval := int(math.Pow10(digits - 2)) // how often to print status messages
 
 	memo := map[string]int{} // Memo-ize all findings for efficiency.
 	steps := map[int]int{}   // Count how many steps to the answer.
 	maxSteps := 0            // Track max number of steps.
-	worst := ""              // What is the worst-case iteration?
-	solutions := []string{}
+	worst := ""              // Track an example of worst-case iteration.
+	solutions := []string{}  // Collect all puzzle solutions as we go.
 
+	// Run all ints 0-max through solution-by-iteration.
 	for i := 0; i <= max; i++ {
 		s := fmt.Sprintf(format, i)
 		n := recurse(memo, map[string]bool{}, s)
 
 		val, _ := steps[n]
-		val++ // val is 0 if not found.
+		val++ // val is 0 if n is not found in steps already.
 		steps[n] = val
 		if n > maxSteps {
 			maxSteps = n
 			worst = s
 			// IDK why we should be able to iterate in fewer steps than the
 			// number of digits, but empirically it's always true. Thus when
-			// this constraint is violated as a constraint, it's a signal that
-			// something is wrong with my implementation.
+			// this constraint is violated, it's a signal that something is
+			// wrong with my implementation.
 			if maxSteps > digits {
 				fmt.Printf("Warning: %s converged in %d steps.\n", s, n)
 			}
@@ -66,7 +70,7 @@ func main() {
 		if digits > 5 && i%statusInterval == 0 {
 			fmt.Printf("%.1e numbers completed", float64(i))
 			if steps[-1] != 0 {
-				fmt.Printf(": %d recursions found (so far)", steps[-1])
+				fmt.Printf(": %d ints landing in loop cycles found (so far)", steps[-1])
 			}
 			fmt.Println(".")
 		}
@@ -77,6 +81,7 @@ func main() {
 		}
 	}
 
+	// Print summary of results.
 	for i := 0; i <= maxSteps; i++ {
 		val, _ := steps[i]
 		if val == 0 {
@@ -92,10 +97,10 @@ func main() {
 }
 
 // recurse returns the number of steps from the current int to a valid solution,
-// memo-izing intermediate steps into m as it goes.
+// memo-izing intermediate steps into `m`. `seen` is used to detect cycles.
 func recurse(m map[string]int, seen map[string]bool, s string) int {
 	if val, ok := m[s]; ok {
-		return val
+		return val // We've seen this number already.
 	}
 
 	n := next(s)
@@ -103,8 +108,8 @@ func recurse(m map[string]int, seen map[string]bool, s string) int {
 		m[n] = 0
 		return 0
 	}
-	if _, ok := seen[n]; ok {
-		return -1 // -1 is a sentinal value for recursion.
+	if _, ok := seen[n]; ok { // if we've already seen `n`, we're in a cycle.
+		return -1 // -1 is a sentinal value for cycle-detection.
 	}
 
 	seen[n] = true
@@ -117,15 +122,17 @@ func recurse(m map[string]int, seen map[string]bool, s string) int {
 	return nSteps + 1
 }
 
-// next finds the next int in the puzzle sequence based on the current int
+// next iterates to the next int in the puzzle sequence based on the current int
 func next(s string) string {
 	m := map[rune]int{}
 
+	// Count the occurance of each digit.
 	for _, rn := range s {
 		val, _ := m[rn]
 		m[rn] = val + 1 // val is 0 if not found.
 	}
 
+	// Now build the next int in the iteration.
 	var b strings.Builder
 	for i, rn := range "0123456789" {
 		if i == digits-1 {
