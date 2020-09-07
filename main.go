@@ -14,9 +14,7 @@ import (
 	"strings"
 )
 
-var (
-	digits = 8
-)
+var digits = 8
 
 func main() {
 	flag.Parse()
@@ -45,7 +43,7 @@ func main() {
 	memo := map[string]int{} // Memo-ize all findings for efficiency.
 	steps := map[int]int{}   // Count how many steps to the answer.
 	maxSteps := 0            // Track max number of steps.
-	worst := 0               // What is the worst-case iteration?
+	worst := ""              // What is the worst-case iteration?
 	solutions := []string{}
 
 	for i := 0; i <= max; i++ {
@@ -57,16 +55,27 @@ func main() {
 		steps[n] = val
 		if n > maxSteps {
 			maxSteps = n
-			worst = i
-			assert(maxSteps <= 10)
+			worst = s
+			// IDK why we should be able to iterate in fewer steps than the
+			// number of digits, but empirically it's always true. Thus when
+			// this constraint is violated as a constraint, it's a signal that
+			// something is wrong with my implementation.
+			if maxSteps > digits {
+				fmt.Printf("Warning: %s converged in %d steps.\n", s, n)
+			}
 		}
 
 		if digits > 5 && i%statusInterval == 0 {
-			fmt.Printf("%.1e\n", float64(i))
+			fmt.Printf("%.1e numbers completed", float64(i))
+			if steps[-1] != 0 {
+				fmt.Printf(": %d recursions found (so far)", steps[-1])
+			}
+			fmt.Println(".")
 		}
 
 		if n == 0 {
 			solutions = append(solutions, s)
+			fmt.Println("Found solution!", s)
 		}
 	}
 
@@ -79,7 +88,7 @@ func main() {
 	}
 	fmt.Printf("%d ints got stuck in loops.\n", steps[-1])
 	if maxSteps > 0 {
-		fmt.Printf(format+" was a worst-case iteration which took %d steps.\n", worst, maxSteps)
+		fmt.Printf("%s was a worst-case iteration which took %d steps.\n", worst, maxSteps)
 	}
 	fmt.Printf("Solutions: %v\n", solutions)
 }
@@ -97,9 +106,7 @@ func recurse(m map[string]int, seen map[string]bool, s string) int {
 		return 0
 	}
 	if _, ok := seen[n]; ok {
-		for k, _ := range seen {
-			m[k] = -1 // -1 is a sentinal value for recursion.
-		}
+		return -1 // -1 is a sentinal value for recursion.
 	}
 
 	seen[n] = true
@@ -128,7 +135,6 @@ func next(s string) string {
 		}
 		val, _ := m[rn] // val is 0 if not found.
 		valStr := fmt.Sprintf("%d", val)
-		assert(1 == len(valStr))
 		b.WriteString(valStr)
 	}
 
