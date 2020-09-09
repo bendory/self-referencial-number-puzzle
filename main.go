@@ -68,7 +68,11 @@ func main() {
 		}
 
 		if digits > 5 && i%statusInterval == 0 {
-			fmt.Printf("%.1e numbers completed; %d memoized", float64(i), len(memo))
+			l := len(memo)
+			fmt.Printf("%.1e numbers completed; %d memoized", float64(i), l)
+			if digits > 8 {
+				memo = make(map[string]int, l) // Conserve memory so we don't blow up!
+			}
 			if steps[-1] != 0 {
 				fmt.Printf("; %d ints landed in loop cycles (so far)", steps[-1])
 			}
