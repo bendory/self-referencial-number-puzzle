@@ -164,3 +164,6 @@ TODO: Explore the hexadecimal space to get beyond 9 digits.
 	Canonical: [23110105]
 
 ### 9 Digits
+
+	(still running; results so far...)
+	Canonical: [322101005 412020004]
