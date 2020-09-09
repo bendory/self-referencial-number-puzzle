@@ -165,5 +165,14 @@ TODO: Explore the hexadecimal space to get beyond 9 digits.
 
 ### 9 Digits
 
-	(still running; results so far...)
-	Canonical: [322101005 412020004]
+	2 ints took 0 steps.
+	18898 ints took 1 steps.
+	28557900 ints took 2 steps.
+	137592000 ints took 3 steps.
+	208998720 ints took 4 steps.
+	6835920 ints took 5 steps.
+	17606552 ints took 6 steps.
+	725760 ints took 7 steps.
+	599664248 ints got stuck in loops.
+	012345678 was a worst-case iteration which took 7 steps.
+	Solutions: [322101005 412020004]
